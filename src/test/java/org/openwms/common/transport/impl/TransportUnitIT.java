@@ -27,16 +27,20 @@ import org.openwms.common.transport.TransportUnitType;
 import org.openwms.common.transport.UnitError;
 import org.openwms.common.transport.barcode.Barcode;
 import org.openwms.common.transport.barcode.BarcodeGenerator;
-import org.openwms.core.units.api.Weight;
-import org.openwms.core.units.api.WeightUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataAccessException;
+import tech.units.indriya.quantity.Quantities;
+
+import javax.measure.quantity.Mass;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
+import static tech.units.indriya.unit.Units.KILOGRAM;
 
 /**
  * A TransportUnitIT.
@@ -146,8 +150,8 @@ class TransportUnitIT {
         assertThat(child.isNew()).isFalse();
         assertThat(parent.getChildren()).hasSize(1);
 
-        parent.getChildren().iterator().next().setWeight(Weight.of(1, WeightUnit.KG));
+        parent.getChildren().iterator().next().setWeight((Mass) Quantities.getQuantity(BigDecimal.ONE, KILOGRAM));
         entityManager.flush();
-        assertThat(child.getWeight()).isEqualTo(Weight.of(1, WeightUnit.KG));
+        assertThat(child.getWeight()).isEqualTo(Quantities.getQuantity(BigDecimal.ONE, KILOGRAM));
     }
 }

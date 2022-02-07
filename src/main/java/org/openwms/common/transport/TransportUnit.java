@@ -23,11 +23,12 @@ import org.hibernate.envers.NotAudited;
 import org.openwms.common.app.Default;
 import org.openwms.common.location.Location;
 import org.openwms.common.transport.barcode.Barcode;
-import org.openwms.core.units.api.Weight;
 import org.openwms.core.values.CoreTypeDefinitions;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.util.Assert;
+import tech.units.indriya.quantity.Quantities;
 
+import javax.measure.quantity.Mass;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,6 +48,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,6 +57,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+import static tech.units.indriya.unit.Units.KILOGRAM;
 
 /**
  * A TransportUnit is a physical item like a box, a toad, a bin, a pallet etc., used as a container that is moved between warehouse
@@ -94,9 +97,9 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
 
     /** Weight of the {@code TransportUnit}. */
     @Embedded
-    @AttributeOverride(name = "unitType", column = @Column(name = "C_WEIGHT_UOM", length = CoreTypeDefinitions.QUANTITY_LENGTH))
-    @AttributeOverride(name = "magnitude", column = @Column(name = "C_WEIGHT"))
-    private Weight weight = Weight.ZERO;
+    @AttributeOverride(name = "unit", column = @Column(name = "C_WEIGHT_UOM", length = CoreTypeDefinitions.QUANTITY_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "C_WEIGHT"))
+    private Mass weight = (Mass) Quantities.getQuantity(BigDecimal.ZERO, KILOGRAM);
 
     /** State of the {@code TransportUnit}. */
     @Column(name = "C_STATE")
@@ -337,7 +340,7 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
      *
      * @return The current weight of the {@code TransportUnit}
      */
-    public Weight getWeight() {
+    public Mass getWeight() {
         return weight;
     }
 
@@ -346,7 +349,7 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
      *
      * @param weight The current weight of the {@code TransportUnit}
      */
-    public void setWeight(Weight weight) {
+    public void setWeight(Mass weight) {
         this.weight = weight;
     }
 

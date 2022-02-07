@@ -21,12 +21,14 @@ import org.junit.jupiter.api.Test;
 import org.openwms.common.location.Location;
 import org.openwms.common.location.LocationPK;
 import org.openwms.common.transport.barcode.Barcode;
-import org.openwms.core.units.api.Weight;
+import tech.units.indriya.quantity.Quantities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static tech.units.indriya.unit.Units.KILOGRAM;
 
 /**
  * A TransportUnitTest.
@@ -73,7 +75,7 @@ class TransportUnitTest {
             assertThat(tu.getActualLocation()).isEqualTo(Location.create(LocationPK.fromString("EXT_/0000/0000/0000/0000")));
             assertThat(tu.getActualLocationDate()).isNotNull();
             assertThat(tu.getTargetLocation()).isNull();
-            assertThat(tu.getWeight()).isEqualTo(Weight.ZERO);
+            assertThat(tu.getWeight()).isEqualTo(Quantities.getQuantity(BigDecimal.ZERO, KILOGRAM));
             assertThat(tu.getState()).isEqualTo(TransportUnitState.AVAILABLE);
             assertThat(tu.getChildren()).isEmpty();
             assertThat(tu.getNoTransportUnits()).isZero();
