@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.util.Assert;
 import tech.units.indriya.quantity.Quantities;
 
-import javax.measure.quantity.Mass;
+import javax.measure.Quantity;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -99,7 +99,7 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
     @Embedded
     @AttributeOverride(name = "unit", column = @Column(name = "C_WEIGHT_UOM", length = CoreTypeDefinitions.QUANTITY_LENGTH))
     @AttributeOverride(name = "value", column = @Column(name = "C_WEIGHT"))
-    private Mass weight = (Mass) Quantities.getQuantity(BigDecimal.ZERO, KILOGRAM);
+    private Quantity weight = Quantities.getQuantity(BigDecimal.ZERO, KILOGRAM);
 
     /** State of the {@code TransportUnit}. */
     @Column(name = "C_STATE")
@@ -340,7 +340,7 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
      *
      * @return The current weight of the {@code TransportUnit}
      */
-    public Mass getWeight() {
+    public Quantity getWeight() {
         return weight;
     }
 
@@ -349,7 +349,7 @@ public class TransportUnit extends ApplicationEntity implements Serializable {
      *
      * @param weight The current weight of the {@code TransportUnit}
      */
-    public void setWeight(Mass weight) {
+    public void setWeight(Quantity weight) {
         this.weight = weight;
     }
 

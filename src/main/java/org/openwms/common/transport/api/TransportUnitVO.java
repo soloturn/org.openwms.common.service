@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ameba.http.AbstractBase;
 import org.openwms.common.location.api.LocationVO;
 
+import javax.measure.Quantity;
 import javax.measure.quantity.Mass;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -71,7 +72,7 @@ public class TransportUnitVO extends AbstractBase<TransportUnitVO> implements Se
 
     /** Weight of the {@code TransportUnit}. */
     @JsonProperty("weight")
-    private Mass weight;
+    private Quantity weight;
 
     /** Date when the {@code TransportUnit} has been moved to the current {@code Location}. */
     @JsonProperty("actualLocationDate")
@@ -170,11 +171,11 @@ public class TransportUnitVO extends AbstractBase<TransportUnitVO> implements Se
         this.transportUnitType = transportUnitType;
     }
 
-    public Mass getWeight() {
+    public Quantity getWeight() {
         return weight;
     }
 
-    public void setWeight(Mass weight) {
+    public void setWeight(Quantity weight) {
         this.weight = weight;
     }
 
